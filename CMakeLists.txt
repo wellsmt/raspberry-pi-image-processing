@@ -1,8 +1,18 @@
 cmake_minimum_required(VERSION 3.8)
-project(TestExample)
+project(raspimage VERSION 0.1 LANGUAGES CXX)
+
+# Must use GNUInstallDirs to install libraries into correct
+# locations on all platforms.
+include(GNUInstallDirs)
+
+# Include Boost as an imported target
+find_package(Boost REQUIRED)
+add_library(boost INTERFACE IMPORTED)
+set_property(TARGET boost PROPERTY
+    INTERFACE_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR})
 
 set(CMAKE_CXX_STANDARD 11)
-
+find_package( OpenCV REQUIRED )
 
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in
@@ -35,8 +45,6 @@ endif()
 
 
 enable_testing()
-add_subdirectory(test)
-
-#set(SOURCE_FILES library.cpp library.h)
-#add_library(TestExample ${SOURCE_FILES})
+add_subdirectory(tests)
+add_subdirectory(src)
 
