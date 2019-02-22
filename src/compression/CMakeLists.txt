@@ -2,7 +2,8 @@
 project(libcompression VERSION 0.1 LANGUAGES CXX)
 
 add_library(compression
-    src/huffman.cpp)
+    src/huffman.cpp
+    src/histogram.cpp)
 
 # Define headers for this library. PUBLIC headers are used for
 # compiling the library, and will be added to consumers' build
@@ -19,8 +20,8 @@ target_compile_features(compression
     PRIVATE cxx_variadic_templates)
 
 # Depend on a library that we defined in the top-level file
-target_link_libraries(compression
-    boost)
+#target_link_libraries(compression
+#    boost)
 
 # 'make install' to the correct locations (provided by GNUInstallDirs).
 install(TARGETS compression EXPORT MyLibraryConfig
@@ -28,7 +29,6 @@ install(TARGETS compression EXPORT MyLibraryConfig
     LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR})  # This is for Windows
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
 
 # This makes the project importable from the install directory
 # Put config file in per-project dir (name MUST match), can also
