@@ -2,8 +2,7 @@
 project(libcompression VERSION 0.1 LANGUAGES CXX)
 
 add_library(compression
-    src/huffman.cpp
-    src/histogram.cpp)
+    src/huffman.cpp)
 
 # Define headers for this library. PUBLIC headers are used for
 # compiling the library, and will be added to consumers' build
@@ -40,7 +39,8 @@ export(TARGETS compression FILE MyLibraryConfig.cmake)
 
 # Every library has unit tests, of course
 add_executable(testcompression
-    tests/testcompression.cpp)
+    tests/testcompression.cpp
+    tests/histogram_test.cpp)
 
 target_link_libraries(testcompression
     compression
