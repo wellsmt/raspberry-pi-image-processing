@@ -2,97 +2,89 @@
 #include <cstddef>
 #include <iostream>
 #include <list>
+#include <queue>
 #include <string>
 #include <utility>
-#include <queue>
-// C++ program for Huffman Coding 
-// A Huffman tree node 
-struct MinHeapNode { 
 
-	// One of the input characters 
-	char data; 
+#include "huffman.h"
+// C++ program for Huffman Coding
 
-	// Frequency of the character 
-	unsigned freq; 
 
-	// Left and right child 
-	MinHeapNode *left, *right; 
-
-	MinHeapNode(char data, unsigned freq)
-	{ 
-		left = right = nullptr; 
-		this->data = data; 
-		this->freq = freq; 
-	} 
-};
-
-// Prints huffman codes from 
-// the root of Huffman Tree. 
-std::string printCodes(struct MinHeapNode* root, std::string str) 
-{
-	if (!root) return ""; 
-    else if (root->data != '$') return str; 
-    else 
-    {
-	    printCodes(root->left, str + "0"); 
-	    printCodes(root->right, str + "1");
-    }
-} 
-
-template <class T, class S, class C>
-S& Container(std::priority_queue<T, S, C>& q) {
-    struct HackedQueue : private std::priority_queue<T, S, C> {
-        static S& Container(std::priority_queue<T, S, C>& q) {
-            return q.*&HackedQueue::c;
-        }
-    };
-    return HackedQueue::Container(q);
+// Prints huffman codes from
+// the root of Huffman Tree.
+std::string huffman::code(const char d) {
+  if(codes.find(d) != codes.end())
+    return codes[d];
+  return "";
 }
 
-// The main function that builds a Huffman Tree and 
-// print codes by traversing the built Huffman Tree 
-std::string HuffmanCodes(std::list<std::pair<char, int>> data) 
-{ 
-	struct MinHeapNode *left, *right, *top; 
-  auto predicate = [](MinHeapNode* l, MinHeapNode* r){ return (l->freq > r->freq); };
+void huffman::printCodes(struct MinHeapNode* root, std::string str){
+ 
+	if (!root) 
+		return; 
 
-	std::priority_queue<MinHeapNode*, std::vector<MinHeapNode*>, decltype( predicate )> minHeap( predicate ); 
-  std::vector<MinHeapNode*> &tasks = Container(minHeap);
+	if (root->data != '$') 
+    codes[root->data] = str;
 
-  auto newNode = [](std::pair<char, int>& d){ return new MinHeapNode(d.first, d.second); };
-  std::for_each(data.begin(), data.end(), newNode);
+	printCodes(root->left, str + "0"); 
+	printCodes(root->right, str + "1"); 
+}
 
-  std::cout<<std::endl<<"Reading numbers in the queue"<<std::endl;
-    for(std::vector<MinHeapNode*>::iterator i=tasks.begin();i!=tasks.end();i++)
-        std::cout<<*i<<std::endl;
-/*
-	// Iterate while size of heap doesn't become 1 
-	while (minHeap.size() != 1) { 
+template <class T, class S, class C>
+S &Container(std::priority_queue<T, S, C> &q) {
+  struct HackedQueue : private std::priority_queue<T, S, C> {
+    static S &Container(std::priority_queue<T, S, C> &q) {
+      return q.*&HackedQueue::c;
+    }
+  };
+  return HackedQueue::Container(q);
+}
 
-		// Extract the two minimum 
-		// freq items from min heap 
-		left = minHeap.top(); 
-		minHeap.pop(); 
+void huffman::print(){
+  std::vector<MinHeapNode *> &tasks = Container(m_minHeap);
 
-		right = minHeap.top(); 
-		minHeap.pop(); 
+  for (std::vector<MinHeapNode *>::iterator i = tasks.begin(); i != tasks.end();
+       i++)
+    std::cout << *i << std::endl;
+}
 
-		// Create a new internal node with 
-		// frequency equal to the sum of the 
-		// two nodes frequencies. Make the 
-		// two extracted node as left and right children 
-		// of this new node. Add this node 
-		// to the min heap '$' is a special value 
-		// for internal nodes, not used 
-		top = new MinHeapNode('$', left->freq + right->freq); 
+// The main function that builds a Huffman Tree and
+// print codes by traversing the built Huffman Tree
+huffman::huffman(const std::list<std::pair<char, int>> &data) {
 
-		top->left = left; 
-		top->right = right; 
+  struct MinHeapNode *left, *right, *top;
 
-		minHeap.push(top);
-	} 
-*/
-	// Print Huffman codes using 
-	// the Huffman tree built above 
-	return printCodes(minHeap.top(), ""); 
+	// Create a min heap & inserts all characters of data[] 
+
+	for (std::list<std::pair<char, int>>::const_iterator i = data.begin(); i != data.end(); ++i) 
+  {
+    std::cout << i->first << " " << i->second << std::endl;
+		m_minHeap.push(new MinHeapNode(i->first, i->second)); 
+  }
+  // Iterate while size of heap doesn't become 1
+  while (m_minHeap.size() != 1  ) {
+    // Extract the two minimum
+    // freq items from min heap
+    left = m_minHeap.top();
+    m_minHeap.pop();
+
+    right = m_minHeap.top();
+    m_minHeap.pop();
+
+    // Create a new internal node with
+    // frequency equal to the sum of the
+    // two nodes frequencies. Make the
+    // two extracted node as left and right children
+    // of this new node. Add this node
+    // to the min heap '$' is a special value
+    // for internal nodes, not used
+    top = new MinHeapNode('$', left->freq + right->freq);
+
+    top->left = left;
+    top->right = right;
+
+    m_minHeap.push(top);
+  }
+ 	printCodes(m_minHeap.top(), ""); 
+
 }
