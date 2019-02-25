@@ -1,6 +1,7 @@
+namespace huffman {
 // A Huffman tree node
 template<class T>
-class MinHeapNode {
+class Node {
 public:
   // One of the input characters
   T data;
@@ -9,11 +10,12 @@ public:
   size_t freq;
 
   // Left and right child
-  MinHeapNode<T> *left, *right;
+  Node<T> *left, *right;
 
-  MinHeapNode<T>(const T data, const size_t freq) {
+  Node<T>(const T data, const size_t freq) {
     left = right = nullptr;
     this->data = data;
     this->freq = freq;
   }
 };
+}

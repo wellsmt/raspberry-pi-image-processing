@@ -1,36 +1,37 @@
-#include <functional>
 #include <list>
 #include <map>
 #include <queue>
 #include <string>
-#include <algorithm>
-#include <cstddef>
-#include <iostream>
-#include <utility>
 #include <sstream>
+#include <vector>
 
 #include "min_heap_node.hpp"
+namespace huffman {
+
+typedef std::list<std::pair<char, size_t>> Char;
+typedef std::list<std::pair<int, size_t>> Int;
+
 /**
  * A class that builds a Huffman Encoding Tree and stores each character encoding for lookup.
  * @note https://en.wikipedia.org/wiki/Huffman_coding.
  */
 template<class T>
-class huffman {
+class Tree {
 public:
   /**
    * A constructor.
    * Builds Huffman tree from data and encodes it.
    * @param a std::list of std::pair<value, count>
    */
-  explicit huffman(const std::list<std::pair<T, int>> &data) {
-    auto compare = [](MinHeapNode<T>* l, MinHeapNode<T>* r){ return (l->freq > r->freq); };
-    MinHeapNode<T> *left, *right, *top;
+  explicit Tree(const std::list<std::pair<T, size_t>> &data) {
+    auto compare = [](Node<T>* l, Node<T>* r){ return (l->freq > r->freq); };
+    Node<T> *left, *right, *top;
 
-    std::priority_queue<MinHeapNode<T>*, std::vector<MinHeapNode<T>*>, decltype(compare)> minHeap(compare);
+    std::priority_queue<Node<T>*, std::vector<Node<T>*>, decltype(compare)> minHeap(compare);
 
     for(auto it = data.begin(); it != data.end(); ++it) 
     {
-      minHeap.push(new MinHeapNode(it->first, it->second)); 
+      minHeap.push(new Node(it->first, it->second)); 
     }
     
     while (minHeap.size() != 1  ) {
@@ -40,7 +41,7 @@ public:
       right = minHeap.top();
       minHeap.pop();
 
-      top = new MinHeapNode(T('*'), left->freq + right->freq);
+      top = new Node(T('*'), left->freq + right->freq);
 
       top->left = left;
       top->right = right;
@@ -53,7 +54,7 @@ public:
   /**
    * A default destructor
    */
-  virtual ~huffman(){}
+  virtual ~Tree(){}
 
   /**
    * Returns the encoded string based on input value from m_codes.
@@ -73,10 +74,10 @@ private:
 
   /**
    * Recursive function designed to create encoded string of a specific value.
-   * @param MinHeapNode<T>* representing the root of the Huffman Tree
+   * @param huffman::Node<T>* representing the root of the Huffman Tree
    * @param std::string the encoded string
    */
-  void printCodes(MinHeapNode<T>* root, std::string str){
+  void printCodes(Node<T>* root, std::string str){
 	  if (!root) 
 		  return; 
 
@@ -87,3 +88,5 @@ private:
 	  printCodes(root->right, str + "1"); 
   }
 };
+
+}
