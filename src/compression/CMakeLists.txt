@@ -26,7 +26,7 @@ export(TARGETS compression FILE MyLibraryConfig.cmake)
 
 # Every library has unit tests, of course
 add_executable(testcompression
-    tests/testcompression.cpp
+    tests/compression_test.cpp
     tests/histogram_test.cpp)
 
 target_link_libraries(testcompression
