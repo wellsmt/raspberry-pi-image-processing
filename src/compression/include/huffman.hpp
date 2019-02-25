@@ -24,7 +24,7 @@ public:
    * @param a std::list of std::pair<value, count>
    */
   explicit Tree(const std::list<std::pair<T, size_t>> &data) {
-    auto compare = [](Node<T>* l, Node<T>* r){ return (l->freq > r->freq); };
+    auto compare = [](Node<T>* l, Node<T>* r){ return (l->count > r->count); };
     Node<T> *left, *right, *top;
 
     std::priority_queue<Node<T>*, std::vector<Node<T>*>, decltype(compare)> minHeap(compare);
@@ -41,7 +41,7 @@ public:
       right = minHeap.top();
       minHeap.pop();
 
-      top = new Node(T('*'), left->freq + right->freq);
+      top = new Node(T('*'), left->count + right->count);
 
       top->left = left;
       top->right = right;
