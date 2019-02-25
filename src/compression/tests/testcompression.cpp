@@ -28,3 +28,11 @@ TEST(HuffmanCodes, IntegerEncoding)
     ASSERT_EQ(h.code(26), "111" );
     ASSERT_EQ(h.code(78), "0" );
 }
+
+TEST(HuffmanCodes, StringWithNoCode){
+    std::list<std::pair<int, int>> data { {125, 5}, {23, 1}, {57, 12}, {45, 13}, {26, 16}, {78, 45} };
+    huffman<int> h(data);
+
+    ASSERT_EQ(h.code(125), "1001" );
+    EXPECT_THROW(h.code(1), std::range_error);
+}
