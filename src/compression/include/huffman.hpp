@@ -5,7 +5,7 @@
 #include <sstream>
 #include <vector>
 
-#include "min_heap_node.hpp"
+#include "huffman_node.hpp"
 namespace huffman {
 
 typedef std::list<std::pair<char, size_t>> Char;
