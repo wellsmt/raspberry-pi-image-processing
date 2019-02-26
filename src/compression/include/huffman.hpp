@@ -1,3 +1,7 @@
+
+#ifndef HUFFMAN_HPP
+#define HUFFMAN_HPP
+
 #include <list>
 #include <map>
 #include <queue>
@@ -90,3 +94,5 @@ private:
 };
 
 }
+
+#endif

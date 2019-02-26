@@ -1,3 +1,6 @@
+#ifndef HUFFMAN_NODE_HPP
+#define HUFFMAN_NODE_HPP
+
 namespace huffman {
 template<class T>
 class Node {
@@ -13,4 +16,6 @@ public:
     this->count = count;
   }
 };
+
 }
+#endif
