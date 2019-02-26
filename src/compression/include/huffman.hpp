@@ -35,7 +35,7 @@ public:
 
     for(auto it = data.begin(); it != data.end(); ++it) 
     {
-      minHeap.push(new Node(it->first, it->second)); 
+      minHeap.push(new Node<T>(it->first, it->second)); 
     }
     
     while (minHeap.size() != 1  ) {
@@ -45,7 +45,7 @@ public:
       right = minHeap.top();
       minHeap.pop();
 
-      top = new Node(T('*'), left->count + right->count);
+      top = new Node<T>(T('*'), left->count + right->count);
 
       top->left = left;
       top->right = right;
