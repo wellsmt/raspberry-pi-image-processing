@@ -11,15 +11,9 @@ int main(){
     std::cout<< "Image is empty" << std::endl;
   }
 
-  cv::namedWindow("Original Image");
-  cv::imshow("Original Image", image);
-
   cv::Mat result;
   cv::flip(image, result, 1);
 
-  cv::namedWindow("Output Image");
-  cv::imshow("Output Image", result);
-
-  cv::waitKey(0);
+  cv::imwrite("coin-flip-1.jpg", result);
   return 0;
 }
