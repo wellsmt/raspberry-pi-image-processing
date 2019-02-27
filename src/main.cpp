@@ -1,19 +1,28 @@
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
+#include <opencv2/opencv.hpp>
 #include <iostream>
+#include <sstream>
 
 int main(){
-  cv::Mat image;
+  cv::VideoCapture cap(0);
 
-  image = cv::imread("images/coin-1.JPG");
+  if(!cap.isOpened())
+    return -1;
 
-  if(image.empty()){
-    std::cout<< "Image is empty" << std::endl;
+  cv::Mat edges;
+  size_t frame_index = 0;
+  std::stringstream frame_name;
+  for(;;)
+  {
+    frame_name.flush();
+
+    cv::Mat frame;
+    cap >> frame; // get a new frame from camera
+    cv::cvtColor(frame, edges, cv::COLOR_BGR2GRAY);
+    cv::GaussianBlur(edges, edges, cv::Size(7,7), 1.5, 1.5);
+    cv::Canny(edges, edges, 0, 30, 3);
+    frame_index++;
+    frame_name << "FRAME_" << frame_index << ".JPG";
+    cv::imwrite(frame_name.str(), edges);
   }
-
-  cv::Mat result;
-  cv::flip(image, result, 1);
-
-  cv::imwrite("coin-flip-1.jpg", result);
   return 0;
 }
