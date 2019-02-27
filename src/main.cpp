@@ -4,12 +4,8 @@
 #include <sstream>
 
 int main(){
-/*  boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory", 1400000);  
-  cv::Mat *array = segment.construct<cv::Mat>
-         ("cv::Mat array")
-         [20]
-         (480, 640, 0);
- */ 
+  boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory", 1400000);  
+  std::cout << "Capture Video" << std::endl; 
   cv::VideoCapture cap(0);
 
   if(!cap.isOpened())
@@ -32,9 +28,13 @@ int main(){
 
     frame_index++;
     frame_name << "FRAME_" << frame_index << ".JPG";
-    cv::imwrite(frame_name.str(), edges);
-//    cv::Mat *p = segment.find_or_construct<cv::Mat>(frame_name.str().c_str())(edges);
-//    cv::imwrite(frame_name.str(), *p); 
+    std::cout << frame_name.str() << std::endl; 
+    cv::Mat *p = segment.construct<cv::Mat>(frame_name.str().c_str())(edges);
+    cv::imwrite(frame_name.str(), *p); 
+    
+    bool destroyed = segment.destroy<cv::Mat>(frame_name.str().c_str());
+    std::cout << (destroyed ? "DESTROYED" : "FAILED TO DESTROY") << std::endl; 
+    boost::interprocess::shared_memory_object::remove("MySharedMemory"); 
   }
   return 0;
 }
