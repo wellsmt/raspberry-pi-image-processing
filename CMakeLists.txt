@@ -9,7 +9,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 # Include Boost as an imported target
 find_package(Boost REQUIRED)
 find_package(OpenCV REQUIRED )
-find_package(cpprestsdk REQUIRED)
 
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in
