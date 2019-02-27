@@ -1,4 +1,5 @@
 #include <boost/interprocess/managed_shared_memory.hpp>
+#include <chrono>
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <sstream>
@@ -15,10 +16,17 @@ int main() {
   cv::Mat edges;
   size_t frame_index = 0;
   std::stringstream frame_name;
+  auto start = std::chrono::high_resolution_clock::now(); 
   for (;;) {
-    // Only keep 20 frames saved to disk for testing
     if (frame_index == 20)
+    {
+      auto end = std::chrono::high_resolution_clock::now(); 
+      std::chrono::duration<double> diff = end-start;
+      std::cout << "Time to Blur and Canny on 20 images " 
+                  << " : " << diff.count() << " s\n";  
+      start = std::chrono::high_resolution_clock::now(); 
       frame_index = 0;
+    } 
     frame_name.str(std::string());
 
     cv::Mat frame;
