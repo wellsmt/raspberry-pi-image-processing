@@ -13,7 +13,9 @@ int main(){
   std::stringstream frame_name;
   for(;;)
   {
-    frame_name.flush();
+    // Only keep 20 frames saved to disk for testing 
+    if(frame_index == 20) frame_index = 0; 
+    frame_name.str(std::string());
 
     cv::Mat frame;
     cap >> frame; // get a new frame from camera

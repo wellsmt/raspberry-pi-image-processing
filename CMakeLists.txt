@@ -8,9 +8,8 @@ include(GNUInstallDirs)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 # Include Boost as an imported target
 find_package(Boost REQUIRED)
-SET(OpenCV_DIR /home/hp/OpenCV_installation/installation/OpenCV-master/lib/cmake/opencv4)
-
-find_package( OpenCV REQUIRED )
+find_package(OpenCV REQUIRED )
+find_package(cpprestsdk REQUIRED)
 
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in
