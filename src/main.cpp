@@ -23,7 +23,7 @@ int main() {
       auto end = std::chrono::high_resolution_clock::now(); 
       std::chrono::duration<double> diff = end-start;
       std::cout << "Time to Blur and Canny on 20 images " 
-                  << " : " << diff.count() << " s\n";  
+                  << " : " << 20.0/diff.count() << "fps\n";  
       start = std::chrono::high_resolution_clock::now(); 
       frame_index = 0;
     } 
@@ -38,7 +38,11 @@ int main() {
     frame_index++;
     frame_name << "FRAME_" << frame_index << ".JPG";
     cv::Mat *p = segment.construct<cv::Mat>(frame_name.str().c_str())(edges);
-
+    auto f = segment.find<cv::Mat>(frame_name.str().c_str());
+    if(f.first)
+    {
+      cv::imwrite(frame_name.str(), *f.first);
+    }
     bool destroyed = segment.destroy<cv::Mat>(frame_name.str().c_str());
     if (!destroyed) {
       std::cout << "FAILED to DESTROY " << frame_name.str() << std::endl;
