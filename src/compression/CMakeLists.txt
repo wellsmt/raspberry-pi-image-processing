@@ -1,13 +1,10 @@
 # Define library. Only source files here!
+cmake_minimum_required(VERSION 3.7)
 project(libcompression VERSION 0.1 LANGUAGES CXX)
 
 add_library(compression INTERFACE)
 
-target_include_directories(compression INTERFACE include/)
-
-# Depend on a library that we defined in the top-level file
-#target_link_libraries(compression
-#    boost)
+target_include_directories(compression INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>)
 
 # 'make install' to the correct locations (provided by GNUInstallDirs).
 install(TARGETS compression EXPORT MyLibraryConfig

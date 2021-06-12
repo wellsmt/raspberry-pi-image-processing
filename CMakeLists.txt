@@ -1,14 +1,19 @@
-cmake_minimum_required(VERSION 3.7)
-project(raspimage VERSION 0.1 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.20)
+project(raspimage)
 
 # Must use GNUInstallDirs to install libraries into correct
 # locations on all platforms.
 include(GNUInstallDirs)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 # Include Boost as an imported target
 find_package(Boost REQUIRED)
-find_package(OpenCV REQUIRED )
+IF (Boost_FOUND)
+  INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+  ADD_DEFINITIONS("-DHAS_BOOST")
+ENDIf()
+find_package(OpenCV REQUIRED)
+find_package(websocketpp REQUIRED)
 
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in
