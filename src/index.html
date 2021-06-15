@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+
+<html>
+   <head>
+      
+      <script type = "text/javascript">
+         function WebSocketTest() {
+            
+            if ("WebSocket" in window) {
+               alert("WebSocket is supported by your Browser!");
+               
+               // Let us open a web socket
+               var ws = new WebSocket("ws://camera:9002");
+
+               ws.onmessage = function (evt) {
+                    var received_msg = evt.data;
+                    var data = evt.data.split(" ");
+
+                    var image_data_base64 = data[3];
+                    var fps = document.getElementById('fps');
+                    fps.textContent = `${data[0]} fps`;
+                    var canvas = document.getElementById('canvas');
+                    var context = canvas.getContext('2d');
+                    var img = new Image();
+
+                    img.onload = function() {
+                        context.drawImage(this, 0, 0, data[2], data[1]);
+                    }
+
+                    img.src = `data:image/png;base64,${image_data_base64}`;
+               };
+				
+               ws.onclose = function() { 
+                  
+                  // websocket is closed.
+                  alert("Connection is closed..."); 
+               };
+            } else {
+              
+               // The browser doesn't support WebSocket
+               alert("WebSocket NOT supported by your Browser!");
+            }
+         }
+      </script>
+		
+   </head>
+   
+   <body>
+      <div id = "sse">
+         <a href = "javascript:WebSocketTest()">Run WebSocket</a>
+         <canvas id="canvas" width="640" height="480"></canvas>
+         <h3 id="fps"></h3>
+      </div>
+      
+   </body>
+</html>
